@@ -13,25 +13,19 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $street = $_POST['street'];
     $students = $_POST['students'];
     $photo = $_POST['photo'];
-    
-    $path = "user_data/$userid.jpeg";
-    $finalPath = "http://192.168.1.13/".$path;
+
 
     require_once 'conn.php';
 
-    $sql = "INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo) VALUES('$userid','$description','$price','$surface','$room','$type','$province','$locality','$street','$students','$finalPath')";
+    $sql = "INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo) VALUES('$userid','$description','$price','$surface','$room','$type','$province','$locality','$street','$students','$photo')";
 
     if(mysqli_query($conn, $sql)) {
 
-        if( file_put_contents($path,base64_decode($photo))) {
-            $result["success"] = "1";
-            $result["message"] = "success";
-    
-            echo json_encode($result);
-            mysqli_close($conn);
+        $result["success"] = "1";
+        $result["message"] = "success";
 
-        }
-
+        echo json_encode($result);
+        mysqli_close($conn);
         
 
         

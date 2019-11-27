@@ -3,7 +3,7 @@
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     $flatid = $_POST['flatid'];
-    $description = $_POST['price'];
+    $price = $_POST['price'];
 
     require_once 'conn.php';
 

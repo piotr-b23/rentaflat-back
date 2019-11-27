@@ -2,32 +2,11 @@
 
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $pricemin = $_POST['pricemin'];
-    $pricemax = $_POST['pricemax'];
-
-    $surfacemin = $_POST['surfacemin'];
-    $surfacemax = $_POST['surfacemax'];
-
-    $roommin = $_POST['roommin'];
-    $roommax = $_POST['roommax'];
-
-    $type = $_POST['type'];
-    $province = $_POST['province'];
-    $locality = $_POST['locality'];
-    $street = $_POST['street'];
-    $students = $_POST['students'];
+    $userid = $_POST['userid'];
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM flat WHERE 
-    price BETWEEN '$pricemin' AND '$pricemax' 
-    AND surface BETWEEN '$surfacemin' AND '$surfacemax'
-    AND room BETWEEN '$roommin' AND '$roommax' 
-    AND type = '$type' 
-    AND province = '$province' 
-    AND locality = '$locality'
-    AND street = '$street' 
-    AND students = '$students'";
+    $sql = "SELECT * FROM flat WHERE userId = '$userid'";
 
     $response = mysqli_query($conn, $sql);
     $result = array();

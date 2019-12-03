@@ -24,10 +24,15 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     AND surface BETWEEN '$surfacemin' AND '$surfacemax'
     AND room BETWEEN '$roommin' AND '$roommax' 
     AND type = '$type' 
-    AND province = '$province' 
-    AND locality = '$locality'
-    AND street = '$street' 
+    AND province = '$province'
     AND students = '$students'";
+
+   if($locality != ""){
+       $sql .= "AND locality = '$locality'";
+   }
+    if($street !=""){
+        $sql .= "AND street = '$street'";
+    }
 
     $response = mysqli_query($conn, $sql);
     $result = array();

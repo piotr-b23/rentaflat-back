@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM rate WHERE userId = '$userid'";
+    $sql = "SELECT * FROM rate WHERE userId = '$userid' ORDER BY date DESC";
 
     $response = mysqli_query($conn, $sql);
     $result = array();
@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     if(mysqli_num_rows($response)>0){
         while ($row = mysqli_fetch_assoc($response)) {
             array_push($result['rate'],array(
+             'rateId'   =>$row['id'],   
              'userId'   =>$row['userId'],   
              'raterId'  =>$row['raterId'],   
              'contactRate'    =>$row['contactRate'],      

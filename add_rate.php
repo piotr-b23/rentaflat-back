@@ -2,10 +2,10 @@
 
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $userId = $_POST['flatid'];
-    $raterId = $_POST['reportUserId'];
-    $contactRate = $_POST['comment'];
-    $descriptionRate = $_POST['flatid'];
+    $userId = $_POST['userId'];
+    $raterId = $_POST['raterId'];
+    $contactRate = $_POST['contactRate'];
+    $descriptionRate = $_POST['descriptionRate'];
     $comment = $_POST['comment'];
     $date = $_POST['date'];
 

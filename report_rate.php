@@ -2,15 +2,15 @@
 
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $faltid = $_POST['flatid'];
-    $reportingUserId = $_POST['reportUserId'];
+    $rateId = $_POST['rateId'];
+    $reportingUserId = $_POST['reportingUserId'];
     $comment = $_POST['comment'];
     $date = $_POST['date'];
 
 
     require_once 'conn.php';
 
-    $sql = "INSERT INTO report(flatId,reportingUserId, comment, date) VALUES('$faltid','$reportingUserId','$comment','$date')";
+    $sql = "INSERT INTO ratereport(rateId,reportingUserId, comment, date) VALUES('$rateId','$reportingUserId','$comment','$date')";
 
     if(mysqli_query($conn, $sql)) {
 

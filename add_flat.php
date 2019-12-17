@@ -13,11 +13,14 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $street = $_POST['street'];
     $students = $_POST['students'];
     $photo = $_POST['photo'];
+    $date = $_POST['date'];
+
+    $status = "active";
 
 
     require_once 'conn.php';
 
-    $sql = "INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo) VALUES('$userid','$description','$price','$surface','$room','$type','$province','$locality','$street','$students','$photo')";
+    $sql = "INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo,date,status) VALUES('$userid','$description','$price','$surface','$room','$type','$province','$locality','$street','$students','$photo','$date','$status')";
 
     if(mysqli_query($conn, $sql)) {
 

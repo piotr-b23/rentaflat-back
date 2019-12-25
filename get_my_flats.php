@@ -3,10 +3,11 @@
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     $userid = $_POST['userid'];
+    $status = "active";
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM flat WHERE userId = '$userid'";
+    $sql = "SELECT * FROM flat WHERE userId = '$userid' AND status = '$status' ORDER BY date DESC";
 
     $response = mysqli_query($conn, $sql);
     $result = array();
@@ -27,7 +28,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
              'locality'     =>$row['locality'],   
              'street'   =>$row['street'],
              'students'     =>$row['students'],   
-             'photo'    =>$row['photo']      
+             'photo'    =>$row['photo'],
+             'date'    =>$row['date']      
             ));
         }
 

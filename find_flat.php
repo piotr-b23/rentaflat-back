@@ -25,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     AND room BETWEEN '$roommin' AND '$roommax' 
     AND type = '$type' 
     AND province = '$province'
-    AND students = '$students'";
+    AND students = '$students'
+    ORDER BY date DESC";
 
    if($locality != ""){
        $sql .= "AND locality = '$locality'";
@@ -53,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
              'locality'     =>$row['locality'],   
              'street'   =>$row['street'],
              'students'     =>$row['students'],   
-             'photo'    =>$row['photo']      
+             'photo'    =>$row['photo'],
+             'date'    =>$row['date']         
             ));
         }
 

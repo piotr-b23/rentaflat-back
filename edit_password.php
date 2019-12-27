@@ -10,32 +10,37 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM user WHERE id = '$id'";
-    $sqle = "UPDATE user SET password='$newpassword' WHERE id='$id' ";
+    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt->bind_param("i",$id);
+    $stmt->execute();
 
-    $response = mysqli_query($conn, $sql);
+    $result = $stmt->get_result();
 
-    if(mysqli_num_rows($response)===1){
-        $row = mysqli_fetch_assoc($response);
+    $stmtUpdatePass = $conn->prepare("UPDATE user SET password=? WHERE id=?");
+    $stmtUpdatePass->bind_param("si",$newpassword,$id);
+
+
+    if(mysqli_num_rows($result)===1){
+        $row = mysqli_fetch_assoc($result);
 
         if (password_verify($password,$row['password'])) {
-            if(mysqli_query($conn, $sqle)) {
-                $result['success']="1";
-                $result['message']="success";
-                echo json_encode($result);
+            if($stmtUpdatePass->execute()) {
+                $response['success']="1";
+                $response['message']="success";
+                echo json_encode($response);
                 mysqli_close($conn);
             }
             else {
-                $result['success']="0";
-                $result['message']="error";
-                echo json_encode($result);
+                $response['success']="0";
+                $response['message']="error";
+                echo json_encode($response);
                 mysqli_close($conn);
             }
         }
         else {
-            $result['success']="0";
-            $result['message']="error";
-            echo json_encode($result);
+            $response['success']="0";
+            $response['message']="password";
+            echo json_encode($response);
             mysqli_close($conn);
         }
     }

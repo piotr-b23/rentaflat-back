@@ -8,10 +8,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM user WHERE id = '$id'";
-    $sqle = "UPDATE user SET email='$email' WHERE id='$id' ";
-
-
     $stmtUpdateMail = $conn->prepare("UPDATE user SET email=? WHERE id=?");
     $stmtUpdateMail->bind_param("si",$email,$id);
 

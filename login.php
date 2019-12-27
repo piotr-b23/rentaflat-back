@@ -8,9 +8,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     require_once 'conn.php';
     
 
-
-   // $sql = "SELECT * FROM user WHERE username = '$username'";
-
     $stmt = $conn->prepare("SELECT * FROM user WHERE username = ?");
     $stmt->bind_param("s",$username);
     $stmt->execute();

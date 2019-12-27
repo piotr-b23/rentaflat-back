@@ -11,32 +11,54 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $sql = "SELECT * FROM user WHERE id = '$id'";
     $sqle = "UPDATE user SET email='$email' WHERE id='$id' ";
 
-    $response = mysqli_query($conn, $sql);
 
-    if(mysqli_num_rows($response)===1){
-        $row = mysqli_fetch_assoc($response);
+    $stmtUpdateMail = $conn->prepare("UPDATE user SET email=? WHERE id=?");
+    $stmtUpdateMail->bind_param("si",$email,$id);
+
+    $stmtExistingMail = $conn->prepare("SELECT id FROM user WHERE email = ?");
+    $stmtExistingMail->bind_param("s",$email);
+    $stmtExistingMail->execute();
+    $checkIfMailExists = $stmtExistingMail->get_result();
+    
+
+    if(mysqli_num_rows($checkIfMailExists)===0)
+    {
+        
+    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt->bind_param("i",$id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if(mysqli_num_rows($result)===1){
+        $row = mysqli_fetch_assoc($result);
 
         if (password_verify($password,$row['password'])) {
-            if(mysqli_query($conn, $sqle)) {
-                $result['success']="1";
-                $result['message']="success";
-                echo json_encode($result);
+            if($stmtUpdateMail->execute()) {
+                $response['success']="1";
+                $response['message']="success";
+                echo json_encode($response);
                 mysqli_close($conn);
             }
             else {
-                $result['success']="0";
-                $result['message']="error";
-                echo json_encode($result);
+                $response['success']="0";
+                $response['message']="error";
+                echo json_encode($response);
                 mysqli_close($conn);
             }
         }
         else {
-            $result['success']="0";
-            $result['message']="error";
-            echo json_encode($result);
+            $response['success']="0";
+            $response['message']="password";
+            echo json_encode($response);
             mysqli_close($conn);
         }
     }
-
-
+}
+    else{
+        $response['success']="0";
+        $response['message']="mail";
+        echo json_encode($response);
+        mysqli_close($conn);
+    }
 }

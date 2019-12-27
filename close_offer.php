@@ -2,32 +2,23 @@
 
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $flatid = $_POST['flatId'];
+    $flatId = $_POST['flatId'];
     $status = 'closed';
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM flat WHERE id = '$flatid'";
-    $sqle = "UPDATE flat SET status='$status' WHERE id='$flatid' ";
-
-    $response = mysqli_query($conn, $sql);
-
-    if(mysqli_num_rows($response)===1){
-        $row = mysqli_fetch_assoc($response);
+    $stmt = $conn->prepare("UPDATE flat SET status= ? WHERE id= ?");
+    $stmt->bind_param("si",$status,$flatId);
         
-            if(mysqli_query($conn, $sqle)) {
-                $result['success']="1";
-                $result['message']="success";
-                echo json_encode($result);
+            if($stmt->execute()) {
+                $response['success']="1";
+                echo json_encode($response);
                 mysqli_close($conn);
             }
             else {
-                $result['success']="0";
-                $result['message']="error";
-                echo json_encode($result);
+                $response['success']="0";
+                echo json_encode($response);
                 mysqli_close($conn);
             }
-    }
-
 
 }

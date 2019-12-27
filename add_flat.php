@@ -2,7 +2,7 @@
 
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $userid = $_POST['userid'];
+    $userId = $_POST['userId'];
     $description = $_POST['description'];
     $price = $_POST['price'];
     $surface = $_POST['surface'];
@@ -22,21 +22,21 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
 
     $stmt =$conn->prepare("INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo,date,status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param("isiiissssisss",$userid,$description,$price,$surface,$room,$type,$province,$locality,$street,$students,$photo,$date,$status);
+    $stmt->bind_param("isiiissssisss",$userId,$description,$price,$surface,$room,$type,$province,$locality,$street,$students,$photo,$date,$status);
 
 
 
     if($stmt->execute()) {
 
-        $result["success"] = "1";
+        $response["success"] = "1";
 
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
         
     }else {
-        $result["success"] = "0";
+        $response["success"] = "0";
 
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
 
     }

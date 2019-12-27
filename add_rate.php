@@ -17,16 +17,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     if($stmt->execute()) {
 
-        $result["success"] = "1";
+        $response["success"] = "1";
 
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
         
 
     }else {
-        $result["success"] = "0";
+        $response["success"] = "0";
 
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
 
     }

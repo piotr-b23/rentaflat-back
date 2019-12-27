@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "INSERT INTO rate(userId,raterId, contactRate, descriptionRate, comment, date) VALUES('$userId','$raterId','$contactRate','$descriptionRate','$comment','$date')";
+    $stmt =$conn->prepare("INSERT INTO rate(userId,raterId, contactRate, descriptionRate, comment, date) VALUES(?,?,?,?,?,?)");
+    $stmt->bind_param("iiddss",$userId,$raterId,$contactRate,$descriptionRate,$comment,$date);
 
-    if(mysqli_query($conn, $sql)) {
+    if($stmt->execute()) {
 
         $result["success"] = "1";
-        $result["message"] = "success";
 
         echo json_encode($result);
         mysqli_close($conn);
@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     }else {
         $result["success"] = "0";
-        $result["message"] = "error";
 
         echo json_encode($result);
         mysqli_close($conn);

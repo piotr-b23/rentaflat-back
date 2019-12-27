@@ -19,23 +19,61 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM flat WHERE 
-    price BETWEEN '$pricemin' AND '$pricemax' 
-    AND surface BETWEEN '$surfacemin' AND '$surfacemax'
-    AND room BETWEEN '$roommin' AND '$roommax' 
-    AND type = '$type' 
-    AND province = '$province'
-    AND students = '$students'
-    ORDER BY date DESC";
 
-   if($locality != ""){
-       $sql .= "AND locality = '$locality'";
+   if($locality != "" && $street !=""){
+    $stmt = $conn->prepare("SELECT * FROM flat WHERE 
+    price BETWEEN ? AND ? 
+    AND surface BETWEEN ? AND ?
+    AND room BETWEEN ? AND ? 
+    AND type = ? 
+    AND province = ?
+    AND locality = ?
+    AND street = ?
+    AND students = ?
+    ORDER BY date DESC");
+    $stmt->bind_param("iiiiiissssi",$pricemin,$pricemax,$surfacemin,$surfacemax,$roommin,$roommax,$type,$province,$locality,$street,$students);
    }
-    if($street !=""){
-        $sql .= "AND street = '$street'";
+   else if($locality != ""){
+    $stmt = $conn->prepare("SELECT * FROM flat WHERE 
+    price BETWEEN ? AND ? 
+    AND surface BETWEEN ? AND ?
+    AND room BETWEEN ? AND ? 
+    AND type = ? 
+    AND province = ?
+    AND locality = ?
+    AND students = ?
+    ORDER BY date DESC");
+    $stmt->bind_param("iiiiiisssi",$pricemin,$pricemax,$surfacemin,$surfacemax,$roommin,$roommax,$type,$province,$locality,$students);
+   }
+    else if($street !=""){
+        $stmt = $conn->prepare("SELECT * FROM flat WHERE 
+        price BETWEEN ? AND ? 
+        AND surface BETWEEN ? AND ?
+        AND room BETWEEN ? AND ? 
+        AND type = ? 
+        AND province = ?
+        AND street = ?
+        AND students = ?
+        ORDER BY date DESC");
+        $stmt->bind_param("iiiiiisssi",$pricemin,$pricemax,$surfacemin,$surfacemax,$roommin,$roommax,$type,$province,$street,$students);
+    }
+    else {
+        $stmt = $conn->prepare("SELECT * FROM flat WHERE 
+        price BETWEEN ? AND ? 
+        AND surface BETWEEN ? AND ?
+        AND room BETWEEN ? AND ? 
+        AND type = ? 
+        AND province = ?
+        AND students = ?
+        ORDER BY date DESC");
+        $stmt->bind_param("iiiiiissi",$pricemin,$pricemax,$surfacemin,$surfacemax,$roommin,$roommax,$type,$province,$students);
     }
 
-    $response = mysqli_query($conn, $sql);
+
+    
+    $stmt->execute();
+
+    $response = $stmt->get_result();
     $result = array();
     $result['flat'] = array();
 

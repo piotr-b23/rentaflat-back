@@ -7,27 +7,20 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM flat WHERE id = '$flatid'";
-    $sqle = "UPDATE flat SET description='$description' WHERE id='$flatid' ";
+    $stmt = $conn->prepare("UPDATE flat SET description= ? WHERE id= ?");
 
-    $response = mysqli_query($conn, $sql);
+    $stmt->bind_param("si",$description,$flatid);
 
-    if(mysqli_num_rows($response)===1){
-        $row = mysqli_fetch_assoc($response);
-        
-            if(mysqli_query($conn, $sqle)) {
+            if($stmt->execute()) {
                 $result['success']="1";
-                $result['message']="success";
                 echo json_encode($result);
                 mysqli_close($conn);
             }
             else {
                 $result['success']="0";
-                $result['message']="error";
                 echo json_encode($result);
                 mysqli_close($conn);
             }
-    }
 
 
 }

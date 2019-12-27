@@ -6,10 +6,16 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $password = $_POST['password'];
 
     require_once 'conn.php';
+    
 
-    $sql = "SELECT * FROM user WHERE username = '$username'";
 
-    $response = mysqli_query($conn, $sql);
+   // $sql = "SELECT * FROM user WHERE username = '$username'";
+
+    $stmt = $conn->prepare("SELECT * FROM user WHERE username = ?");
+    $stmt->bind_param("s",$username);
+    $stmt->execute();
+
+    $response = $stmt->get_result();
     $result = array();
     $result['login'] = array();
 

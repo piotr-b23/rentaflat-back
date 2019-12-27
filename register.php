@@ -12,10 +12,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $password = password_hash ($password, PASSWORD_DEFAULT);
 
     require_once 'conn.php';
+    
 
-    $sql = "INSERT INTO user(name,username, password, email,status) VALUES('$name','$username','$password','$email','$status')";
+    $stmt =$conn->prepare("INSERT INTO user(name,username, password, email,status) VALUES(?,?,?,?,?)");
+    $stmt->bind_param("sssss",$name, $username, $password, $email,$status);
 
-    if(mysqli_query($conn, $sql)) {
+    if($stmt->execute()) {
         $result["success"] = "1";
         $result["message"] = "success";
 

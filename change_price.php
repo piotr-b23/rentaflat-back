@@ -10,12 +10,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $sql = "SELECT * FROM flat WHERE id = '$flatid'";
     $sqle = "UPDATE flat SET price='$price' WHERE id='$flatid' ";
 
-    $response = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("UPDATE flat SET price= ? WHERE id= ?");
 
-    if(mysqli_num_rows($response)===1){
-        $row = mysqli_fetch_assoc($response);
+    $stmt->bind_param("ii",$price,$flatid);
         
-            if(mysqli_query($conn, $sqle)) {
+            if($stmt->execute()) {
                 $result['success']="1";
                 $result['message']="success";
                 echo json_encode($result);
@@ -27,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
                 echo json_encode($result);
                 mysqli_close($conn);
             }
-    }
-
+    
 
 }

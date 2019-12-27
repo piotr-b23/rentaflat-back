@@ -7,27 +7,19 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM user WHERE id = '$id'";
-    $sqle = "UPDATE user SET phone='$phone' WHERE id='$id' ";
-
-    $response = mysqli_query($conn, $sql);
-
-    if(mysqli_num_rows($response)===1){
-        $row = mysqli_fetch_assoc($response);
+    $stmt = $conn->prepare("UPDATE user SET phone=? WHERE id=? ");
+    $stmt->bind_param("si",$phone, $id);
         
-            if(mysqli_query($conn, $sqle)) {
+            if($stmt->execute()) {
                 $result['success']="1";
-                $result['message']="success";
                 echo json_encode($result);
                 mysqli_close($conn);
             }
             else {
                 $result['success']="0";
-                $result['message']="error";
                 echo json_encode($result);
                 mysqli_close($conn);
             }
-    }
 
 
 }

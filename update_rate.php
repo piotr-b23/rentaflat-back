@@ -11,23 +11,21 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "UPDATE rate SET contactRate='$contactRate',descriptionRate='$descriptionRate',comment='$comment',date='$date' WHERE id='$rateId' ";
+    $stmt =$conn->prepare("UPDATE rate SET contactRate=?,descriptionRate=?,comment=?,date=? WHERE id=?");
+    $stmt->bind_param("ddssi",$contactRate, $descriptionRate, $comment, $date, $rateId);
 
 
-    if(mysqli_query($conn, $sql)) {
+    if($stmt->execute()) {
+        $response["success"] = "1";
 
-        $result["success"] = "1";
-        $result["message"] = "success";
-
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
         
 
     }else {
-        $result["success"] = "0";
-        $result["message"] = "error";
+        $response["success"] = "0";
 
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
 
     }

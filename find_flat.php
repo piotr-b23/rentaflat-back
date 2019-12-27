@@ -68,19 +68,17 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         ORDER BY date DESC");
         $stmt->bind_param("iiiiiissi",$pricemin,$pricemax,$surfacemin,$surfacemax,$roommin,$roommax,$type,$province,$students);
     }
-
-
     
     $stmt->execute();
 
-    $response = $stmt->get_result();
-    $result = array();
-    $result['flat'] = array();
+    $result = $stmt->get_result();
+    $response = array();
+    $response['flat'] = array();
 
 
-    if(mysqli_num_rows($response)>0){
-        while ($row = mysqli_fetch_assoc($response)) {
-            array_push($result['flat'],array(
+    if(mysqli_num_rows($result)>0){
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($response['flat'],array(
              'id'   =>$row['id'],
              'userid'   =>$row['userId'],   
              'description'  =>$row['description'],   
@@ -95,19 +93,15 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
              'photo'    =>$row['photo'],
              'date'    =>$row['date']         
             ));
-        }
+        }    
 
-            
-
-            $result['success']="1";
-            $result['message']="success";
-            echo json_encode($result);
+            $response['success']="1";
+            echo json_encode($response);
             mysqli_close($conn);
     }     
         else {
-            $result['success']="0";
-            $result['message']="error";
-            echo json_encode($result);
+            $response['success']="0";
+            echo json_encode($response);
             mysqli_close($conn);
         }
     

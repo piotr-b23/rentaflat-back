@@ -2,7 +2,7 @@
 
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $faltid = $_POST['flatid'];
+    $flatId = $_POST['flatId'];
     $reportingUserId = $_POST['reportUserId'];
     $comment = $_POST['comment'];
     $date = $_POST['date'];
@@ -10,22 +10,20 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $sql = "INSERT INTO flatreport(flatId,reportingUserId, comment, date) VALUES('$faltid','$reportingUserId','$comment','$date')";
+    $stmt =$conn->prepare("INSERT INTO flatreport(flatId,reportingUserId, comment, date) VALUES(?,?,?,?)");
+    $stmt->bind_param("iiss",$flatId, $reportingUserId, $comment, $date);
 
-    if(mysqli_query($conn, $sql)) {
+    if($stmt->execute()) {
+        $response["success"] = "1";
 
-        $result["success"] = "1";
-        $result["message"] = "success";
-
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
         
 
     }else {
-        $result["success"] = "0";
-        $result["message"] = "error";
+        $response["success"] = "0";
 
-        echo json_encode($result);
+        echo json_encode($response);
         mysqli_close($conn);
 
     }

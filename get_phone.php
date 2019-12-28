@@ -1,31 +1,31 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD']=='POST'){
+if ($_SERVER['REQUEST_METHOD']=='GET'){
 
-    $userid = $_POST['userid'];
+    $userId = $_GET['userId'];
 
     require_once 'conn.php';
 
-    $sql = "SELECT phone FROM user WHERE id = '$userid'";
+    $stmt = $conn->prepare("SELECT phone FROM user WHERE id = ?");
+    $stmt->bind_param("i",$userId);
+    $stmt->execute();
 
-    $response = mysqli_query($conn, $sql);
+    $result = $stmt->get_result();
 
-    if(mysqli_num_rows($response)===1){
+    if(mysqli_num_rows($result)===1){
 
-        if ($row = mysqli_fetch_assoc($response)) {
+        if ($row = mysqli_fetch_assoc($result)) {
 
             $phone = $row['phone'];
 
-            $result['success']="1";
-            $result['message']="success";
-            $result['phone']=$phone;
-            echo json_encode($result);
+            $response['success']="1";
+            $response['phone']=$phone;
+            echo json_encode($response);
         }
     }
         else {
-            $result['success']="0";
-            $result['message']="error";
-            echo json_encode($result);
+            $response['success']="0";
+            echo json_encode($response);
             mysqli_close($conn);
         }
     }

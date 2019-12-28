@@ -1,21 +1,23 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD']=='POST'){
+if ($_SERVER['REQUEST_METHOD']=='GET'){
 
-    $userid = $_POST['userid'];
+    $userId = $_GET['userId'];
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM rate WHERE userId = '$userid' ORDER BY date DESC";
+    $stmt = $conn->prepare("SELECT * FROM rate WHERE userId = ? ORDER BY date DESC");
+    $stmt->bind_param("i",$userId);
+    $stmt->execute();
 
-    $response = mysqli_query($conn, $sql);
-    $result = array();
-    $result['rate'] = array();
+    $result = $stmt->get_result();
+    $response = array();
+    $response['rate'] = array();
 
 
-    if(mysqli_num_rows($response)>0){
-        while ($row = mysqli_fetch_assoc($response)) {
-            array_push($result['rate'],array(
+    if(mysqli_num_rows($result)>0){
+        while ($row = mysqli_fetch_assoc($result)) {
+            array_push($response['rate'],array(
              'rateId'   =>$row['id'],   
              'userId'   =>$row['userId'],   
              'raterId'  =>$row['raterId'],   
@@ -27,15 +29,13 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         }
             
 
-            $result['success']="1";
-            $result['message']="success";
-            echo json_encode($result);
+            $response['success']="1";
+            echo json_encode($response);
             mysqli_close($conn);
     }     
         else {
-            $result['success']="0";
-            $result['message']="error";
-            echo json_encode($result);
+            $response['success']="0";
+            echo json_encode($response);
             mysqli_close($conn);
         }
     

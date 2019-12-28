@@ -2,16 +2,14 @@
 
 if ($_SERVER['REQUEST_METHOD']=='GET'){
 
-    $userid = $_GET['userId'];
+    $userId = $_GET['userId'];
     $status = "active";
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM flat WHERE userId = '$userid' AND status = '$status' ORDER BY date DESC";
-
 
     $stmt = $conn->prepare("SELECT * FROM flat WHERE userId = ? AND status = ? ORDER BY date DESC");
-    $stmt->bind_param("is",$userid,$status);
+    $stmt->bind_param("is",$userId,$status);
     $stmt->execute();
 
     $result = $stmt->get_result();

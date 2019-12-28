@@ -1,30 +1,43 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD']=='POST'){
+if ($_SERVER['REQUEST_METHOD']=='GET'){
 
-    $userid = $_POST['userid'];
-    $raterid = $_POST['raterid'];
+    $userId = $_GET['userId'];
+    $raterId = $_GET['raterId'];
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM rate WHERE userId = '$userid' AND raterId = '$raterid'";
+    $stmt =$conn->prepare("SELECT * FROM rate WHERE userId = ? AND raterId = ?");
+    $stmt->bind_param("ii",$userId, $raterId);
+    $stmt->execute();
 
-    $response = mysqli_query($conn, $sql);
+    $result = $stmt->get_result();
 
 
-    if(mysqli_num_rows($response)===0){
-        
-                $result['success']="1";
-                $result['message']="not rated";
-                echo json_encode($result);
-                mysqli_close($conn);
-    }
-            else {
-                $result['success']="0";
-                $result['message']="rated";
-                echo json_encode($result);
-                mysqli_close($conn);
-            }
+    if($userId != $raterId){
+
     
 
+    if(mysqli_num_rows($result)>0){
+        
+        $response['success']="0";
+        $response['message']="rated";
+        echo json_encode($response);
+        mysqli_close($conn);
+
+    }
+            else {
+                $response['success']="1";
+                $response['message']="not rated";
+                echo json_encode($response);
+                mysqli_close($conn);
+            }
+
+}
+else{
+    $response['success']="0";
+    $response['message']="same user";
+    echo json_encode($response);
+    mysqli_close($conn);
+}
 }

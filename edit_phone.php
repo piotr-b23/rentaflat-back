@@ -2,20 +2,18 @@
 include "auth.php";
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    require_once "auth.php";
-
      $token = $_SERVER['HTTP_AUTHORIZATION_TOKEN'];
 
 
-    $id = $_POST['id'];
+    $userId = $_POST['userId'];
     $phone = $_POST['phone'];
 
     require_once 'conn.php';
 
     $stmt = $conn->prepare("UPDATE user SET phone=? WHERE id=? ");
-    $stmt->bind_param("si",$phone, $id);
+    $stmt->bind_param("si",$phone, $userId);
 
-    $auth = authorization($id,$token);
+    $auth = authorization($userId,$token);
 
 
     if($auth===1)

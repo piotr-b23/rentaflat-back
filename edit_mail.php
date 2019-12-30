@@ -1,15 +1,23 @@
 <?php
-
+include "auth.php";
 if ($_SERVER['REQUEST_METHOD']=='POST'){
 
-    $id = $_POST['id'];
+    $token = $_SERVER['HTTP_AUTHORIZATION_TOKEN'];
+
+    $userId = $_POST['userId'];
     $password = $_POST['password'];
     $email = $_POST['email'];
 
     require_once 'conn.php';
 
     $stmtUpdateMail = $conn->prepare("UPDATE user SET email=? WHERE id=?");
-    $stmtUpdateMail->bind_param("si",$email,$id);
+    $stmtUpdateMail->bind_param("si",$email,$userId);
+
+    $auth = authorization($userId,$token);
+
+
+    if($auth===1)
+    {
 
     $stmtExistingMail = $conn->prepare("SELECT id FROM user WHERE email = ?");
     $stmtExistingMail->bind_param("s",$email);
@@ -21,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     {
         
     $stmt = $conn->prepare("SELECT password FROM user WHERE id = ?");
-    $stmt->bind_param("i",$id);
+    $stmt->bind_param("i",$userId);
     $stmt->execute();
 
     $result = $stmt->get_result();
@@ -57,4 +65,10 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         echo json_encode($response);
         mysqli_close($conn);
     }
+}
+else{
+    $result['success']="0";
+    echo json_encode($result);
+    mysqli_close($conn);
+}
 }

@@ -1,6 +1,8 @@
 <?php
-
+include "auth.php";
 if ($_SERVER['REQUEST_METHOD']=='POST'){
+
+    $token = $_SERVER['HTTP_AUTHORIZATION_TOKEN'];
 
     $userId = $_POST['userId'];
     $raterId = $_POST['raterId'];
@@ -15,6 +17,11 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     $stmt =$conn->prepare("INSERT INTO rate(userId,raterId, contactRate, descriptionRate, comment, date) VALUES(?,?,?,?,?,?)");
     $stmt->bind_param("iiddss",$userId,$raterId,$contactRate,$descriptionRate,$comment,$date);
 
+    $auth = authorization($raterId,$token);
+
+
+    if($auth===1)
+    {
     if($raterId != $userId)
     {
     if($stmt->execute()) {
@@ -40,6 +47,11 @@ else {
     $response["message"] = "same user"
 
     echo json_encode($response);
+    mysqli_close($conn);
+}        }
+else{
+    $result['success']="0";
+    echo json_encode($result);
     mysqli_close($conn);
 }
 

@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     require_once 'conn.php';
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt = $conn->prepare("SELECT password FROM user WHERE id = ?");
     $stmt->bind_param("i",$id);
     $stmt->execute();
 

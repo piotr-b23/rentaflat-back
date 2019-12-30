@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
             $response['success']="1";
             $response['phone']=$phone;
             echo json_encode($response);
+            mysqli_close($conn);
         }
     }
         else {
@@ -29,3 +30,5 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
             mysqli_close($conn);
         }
     }
+
+    ?>

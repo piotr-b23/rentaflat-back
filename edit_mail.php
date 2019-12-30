@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     if(mysqli_num_rows($checkIfMailExists)===0)
     {
         
-    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $stmt = $conn->prepare("SELECT password FROM user WHERE id = ?");
     $stmt->bind_param("i",$id);
     $stmt->execute();
 

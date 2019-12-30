@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
     require_once 'conn.php';
     
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE username = ?");
+    $stmt = $conn->prepare("SELECT name,id,password FROM user WHERE username = ?");
     $stmt->bind_param("s",$username);
     $stmt->execute();
 
@@ -20,8 +20,14 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
         $row = mysqli_fetch_assoc($result);
 
         if (password_verify($password,$row['password'])) {
+
+            $token = bin2hex(openssl_random_pseudo_bytes(64));
+            $stmtToken = $conn->prepare("UPDATE user SET authToken=? WHERE id=?");
+            $stmtToken->bind_param("si",$token,$row['id']);
+            $stmtToken->execute();
+
             $index['name'] = $row['name'];
-            $index['username'] = $row['username'];
+            $index['token'] = $token;
             $index['id'] = $row['id'];
 
             array_push($response['login'],$index);

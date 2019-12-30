@@ -1,12 +1,13 @@
 <?php
 
-function authorization($userId,$token){
+function authorization($userId, $token)
+{
 
-     require 'conn.php';
+    require 'conn.php';
 
-     $stmt = $conn->prepare("SELECT * FROM user WHERE id = ? AND authToken = ?");
-     $stmt->bind_param("is",$userId,$token);
-     $stmt->execute();
+    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ? AND authToken = ?");
+    $stmt->bind_param("is", $userId, $token);
+    $stmt->execute();
 
     $result = $stmt->get_result();
     $rowsCount = mysqli_num_rows($result);
@@ -14,6 +15,3 @@ function authorization($userId,$token){
 
     return $rowsCount;
 }
-
-?>
-            

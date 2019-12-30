@@ -1,6 +1,6 @@
 <?php
 include "auth.php";
-if ($_SERVER['REQUEST_METHOD']=='POST'){
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $token = $_SERVER['HTTP_AUTHORIZATION_TOKEN'];
 
@@ -19,36 +19,32 @@ if ($_SERVER['REQUEST_METHOD']=='POST'){
 
     $status = "active";
 
-
     require_once 'conn.php';
 
+    $stmt = $conn->prepare("INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo,date,status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $stmt->bind_param("isiiissssisss", $userId, $description, $price, $surface, $room, $type, $province, $locality, $street, $students, $photo, $date, $status);
 
-    $stmt =$conn->prepare("INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo,date,status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param("isiiissssisss",$userId,$description,$price,$surface,$room,$type,$province,$locality,$street,$students,$photo,$date,$status);
+    $auth = authorization($userId, $token);
 
+    if ($auth === 1) {
+        if ($stmt->execute()) {
 
-    $auth = authorization($userId,$token);
+            $response["success"] = "1";
 
-    if($auth===1)
-    {
-    if($stmt->execute()) {
+            echo json_encode($response);
+            mysqli_close($conn);
 
-        $response["success"] = "1";
+        } else {
+            $response["success"] = "0";
 
-        echo json_encode($response);
+            echo json_encode($response);
+            mysqli_close($conn);
+
+        }
+    } else {
+        $result['success'] = "0";
+        echo json_encode($result);
         mysqli_close($conn);
-        
-    }else {
-        $response["success"] = "0";
-
-        echo json_encode($response);
-        mysqli_close($conn);
-
     }
-}        else{
-    $result['success']="0";
-    echo json_encode($result);
-    mysqli_close($conn);
-}
 
 }

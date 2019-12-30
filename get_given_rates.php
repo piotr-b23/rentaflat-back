@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD']=='GET'){
 
     if(mysqli_num_rows($result)>0){
         while ($row = mysqli_fetch_assoc($result)) {
-            array_push($result['rate'],array(
+            array_push($response['rate'],array(
              'rateId'   =>$row['id'],   
              'userId'   =>$row['userId'],   
              'raterId'  =>$row['raterId'],   

@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $locality = $_POST['locality'];
     $street = $_POST['street'];
     $students = $_POST['students'];
+    $status = "active";
 
     require_once 'conn.php';
 
@@ -54,15 +55,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ORDER BY date DESC");
         $stmt->bind_param("iiiiiisssi", $pricemin, $pricemax, $surfacemin, $surfacemax, $roommin, $roommax, $type, $province, $street, $students);
     } else {
-        $stmt = $conn->prepare("SELECT * FROM flat WHERE
-        price BETWEEN ? AND ?
-        AND surface BETWEEN ? AND ?
-        AND room BETWEEN ? AND ?
-        AND type = ?
-        AND province = ?
-        AND students = ?
-        ORDER BY date DESC");
-        $stmt->bind_param("iiiiiissi", $pricemin, $pricemax, $surfacemin, $surfacemax, $roommin, $roommax, $type, $province, $students);
+        $stmt = $conn->prepare("SELECT * FROM flat INNER JOIN user ON user.id = flat.userId
+        WHERE user.status = ? AND
+        flat.price BETWEEN ? AND ?
+        AND flat.surface BETWEEN ? AND ?
+        AND flat.room BETWEEN ? AND ?
+        AND flat.type = ?
+        AND flat.province = ?
+        AND flat.students = ?
+        ORDER BY flat.date DESC");
+        $stmt->bind_param("siiiiiissi",$status, $pricemin, $pricemax, $surfacemin, $surfacemax, $roommin, $roommax, $type, $province, $students);
     }
 
     $stmt->execute();

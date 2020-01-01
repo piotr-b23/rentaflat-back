@@ -10,9 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     require_once 'conn.php';
 
-    $stmt = $conn->prepare("UPDATE flat SET price= ? WHERE id= ?");
+    $stmt = $conn->prepare("UPDATE flat SET price = ? WHERE id = ? AND userId = ?");
 
-    $stmt->bind_param("ii", $price, $flatId);
+    $stmt->bind_param("iii", $price, $flatId, $userId);
 
     $auth = authorization($userId, $token);
 

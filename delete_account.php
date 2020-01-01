@@ -1,37 +1,55 @@
 <?php
-
+include "auth.php";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $id = $_POST['id'];
+    $token = $_SERVER['HTTP_AUTHORIZATION_TOKEN'];
+
+    $username = $_POST['username'];
     $password = $_POST['password'];
-    $deleted = "deleted";
+    $userId = $_POST['userId'];
+    $null = null;
+    $status = "deleted";
 
     require_once 'conn.php';
 
-    $sql = "SELECT * FROM user WHERE id = '$id'";
-    $sqle = "UPDATE user SET (name,username, password, email,phone,status) VALUES('$deleted','$deleted','$deleted','$deleted',NULL,'$deleted') ";
+    $auth = authorization($userId, $token);
+    if ($auth === 1) {
 
-    $response = mysqli_query($conn, $sql);
+        $stmt = $conn->prepare("SELECT password FROM user WHERE username = ? AND id = ?");
+        $stmt->bind_param("si", $username, $userId);
+        $stmt->execute();
 
-    if (mysqli_num_rows($response) === 1) {
-        $row = mysqli_fetch_assoc($response);
+        $result = $stmt->get_result();
 
-        if (password_verify($password, $row['password'])) {
-            if (mysqli_query($conn, $sqle)) {
-                $result['success'] = "1";
-                $result['message'] = "success";
-                echo json_encode($result);
-                mysqli_close($conn);
+        $stmtDeleteUser = $conn->prepare("UPDATE user SET name = ?,username= ?, password= ?, email= ?,phone= ?,status= ?, authToken = ? WHERE username = ? AND id = ?");
+        $stmtDeleteUser->bind_param("ssssisssi", $null, $null, $null, $null, $null, $status,$null,$username, $userId);
+
+        if (mysqli_num_rows($result) === 1) {
+
+            $row = mysqli_fetch_assoc($result);
+
+            if (password_verify($password, $row['password'])) {
+                if ($stmtDeleteUser->execute()) {
+                    $response['success'] = "1";
+                    $response['message'] = "success";
+                    echo json_encode($response);
+                    mysqli_close($conn);
+                } else {
+                    $response['success'] = "0";
+                    $response['message'] = "error";
+                    echo json_encode($response);
+                    mysqli_close($conn);
+                }
             } else {
-                $result['success'] = "0";
-                $result['message'] = "error";
-                echo json_encode($result);
+                $response['success'] = "0";
+                $response['message'] = "error";
+                echo json_encode($response);
                 mysqli_close($conn);
             }
         } else {
-            $result['success'] = "0";
-            $result['message'] = "error";
-            echo json_encode($result);
+            $response['success'] = "0";
+            $response['message'] = "error";
+            echo json_encode($response);
             mysqli_close($conn);
         }
     }

@@ -44,14 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             echo json_encode($response);
             mysqli_close($conn);
         } else {
-            $result['success'] = "0";
+            $response['success'] = "0";
             echo json_encode($response);
             mysqli_close($conn);
         }
     } else {
-        $result['success'] = "0";
-        echo json_encode($result);
+        $response['success'] = "0";
+        echo json_encode($response);
         mysqli_close($conn);
     }
-
 }

@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     require_once 'conn.php';
 
-    $stmt = $conn->prepare("SELECT * FROM rate WHERE userId = ? ORDER BY date DESC");
+    $stmt = $conn->prepare("SELECT id, userId, contactRate, descriptionRate, comment, date FROM rate WHERE userId = ? ORDER BY date DESC");
     $stmt->bind_param("i", $userId);
     $stmt->execute();
 
@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             array_push($response['rate'], array(
                 'rateId' => $row['id'],
                 'userId' => $row['userId'],
-                'raterId' => $row['raterId'],
                 'contactRate' => $row['contactRate'],
                 'descriptionRate' => $row['descriptionRate'],
                 'comment' => $row['comment'],

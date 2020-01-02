@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         $stmt = $conn->prepare("SELECT * FROM flat INNER JOIN user ON user.id = flat.userId
         WHERE user.status = ? AND
+        flat.status = ? AND
         flat.price BETWEEN ? AND ?
         AND flat.surface BETWEEN ? AND ?
         AND flat.room BETWEEN ? AND ?
@@ -64,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         AND flat.province = ?
         AND flat.students = ?
         ORDER BY flat.date DESC");
-        $stmt->bind_param("siiiiiissi",$status, $pricemin, $pricemax, $surfacemin, $surfacemax, $roommin, $roommax, $type, $province, $students);
+        $stmt->bind_param("ssiiiiiissi",$status, $status, $pricemin, $pricemax, $surfacemin, $surfacemax, $roommin, $roommax, $type, $province, $students);
     }
 
     $stmt->execute();

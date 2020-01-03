@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $conn->prepare("INSERT INTO message(senderId, recipientId, title, text,date) VALUES(?,?,?,?,?)");
     $stmt->bind_param("iisss", $senderId, $recipientId, $title, $text, $date);
 
-    $auth = authorization($userId, $token);
+    $auth = authorization($senderId, $token);
 
     if ($auth === 1) {
         if ($stmt->execute()) {

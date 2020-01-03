@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $result = $stmt->get_result();
 
-        $stmtDeleteUser = $conn->prepare("UPDATE user SET name = ?,username= ?, password= ?, email= ?,phone= ?,status= ?, authToken = ? WHERE username = ? AND id = ?");
-        $stmtDeleteUser->bind_param("ssssisssi", $null, $null, $null, $null, $null, $status, $null, $username, $userId);
+        $stmtDeleteUser = $conn->prepare("UPDATE user SET username= ?, password= ?, email= ?,phone= ?,status= ?, authToken = ? WHERE username = ? AND id = ?");
+        $stmtDeleteUser->bind_param("sssisssi", $null, $null, $null, $null, $status, $null, $username, $userId);
 
         if (mysqli_num_rows($result) === 1) {
 

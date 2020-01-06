@@ -2,6 +2,8 @@
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+
+    $id = uniqid(rand()).uniqid();
     $name = $_POST['name'];
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -12,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     require_once 'conn.php';
 
-    $stmt = $conn->prepare("INSERT INTO user(name,username, password, email,status) VALUES(?,?,?,?,?)");
-    $stmt->bind_param("sssss", $name, $username, $password, $email, $status);
+    $stmt = $conn->prepare("INSERT INTO user(id,name,username, password, email,status) VALUES(?,?,?,?,?,?)");
+    $stmt->bind_param("ssssss",$id, $name, $username, $password, $email, $status);
 
     if ($stmt->execute()) {
         $response["success"] = "1";

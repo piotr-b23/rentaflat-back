@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("SELECT id, userId, contactRate, descriptionRate, comment, date FROM rate WHERE userId = ? ORDER BY date DESC");
-    $stmt->bind_param("i", $userId);
+    $stmt->bind_param("s", $userId);
     $stmt->execute();
 
     $result = $stmt->get_result();

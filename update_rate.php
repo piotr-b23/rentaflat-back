@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     require_once 'conn.php';
 
-    $stmt = $conn->prepare("UPDATE rate SET contactRate=?,descriptionRate=?,comment=?,date=? WHERE id=?");
-    $stmt->bind_param("ddssi", $contactRate, $descriptionRate, $comment, $date, $rateId);
+    $stmt = $conn->prepare("UPDATE rate SET contactRate=?,descriptionRate=?,comment=?,date=? WHERE id=? AND raterId = ?");
+    $stmt->bind_param("ddssis", $contactRate, $descriptionRate, $comment, $date, $rateId, $userId);
 
     $auth = authorization($userId, $token);
 

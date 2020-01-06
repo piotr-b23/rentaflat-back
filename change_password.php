@@ -17,13 +17,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($auth === 1) {
 
         $stmt = $conn->prepare("SELECT password FROM user WHERE id = ?");
-        $stmt->bind_param("i", $userId);
+        $stmt->bind_param("s", $userId);
         $stmt->execute();
 
         $result = $stmt->get_result();
 
         $stmtUpdatePass = $conn->prepare("UPDATE user SET password=? WHERE id=?");
-        $stmtUpdatePass->bind_param("si", $newpassword, $userId);
+        $stmtUpdatePass->bind_param("ss", $newpassword, $userId);
 
         if (mysqli_num_rows($result) === 1) {
             $row = mysqli_fetch_assoc($result);

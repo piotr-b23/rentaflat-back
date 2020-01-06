@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("INSERT INTO flat(userId,description, price, surface,room,type,province,locality,street,students,photo,date,status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $stmt->bind_param("isiiissssisss", $userId, $description, $price, $surface, $room, $type, $province, $locality, $street, $students, $photo, $date, $status);
+    $stmt->bind_param("ssiiissssisss", $userId, $description, $price, $surface, $room, $type, $province, $locality, $street, $students, $photo, $date, $status);
 
     $auth = authorization($userId, $token);
 

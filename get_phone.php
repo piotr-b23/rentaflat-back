@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("SELECT phone FROM user WHERE id = ?");
-    $stmt->bind_param("i", $userId);
+    $stmt->bind_param("s", $userId);
     $stmt->execute();
 
     $result = $stmt->get_result();

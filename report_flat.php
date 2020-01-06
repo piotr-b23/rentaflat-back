@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("INSERT INTO flatreport(flatId,reportingUserId, comment, date) VALUES(?,?,?,?)");
-    $stmt->bind_param("iiss", $flatId, $reportingUserId, $comment, $date);
+    $stmt->bind_param("isss", $flatId, $reportingUserId, $comment, $date);
 
     $auth = authorization($reportingUserId, $token);
 

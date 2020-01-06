@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("SELECT id FROM rate WHERE userId = ? AND raterId = ?");
-    $stmt->bind_param("ii", $userId, $raterId);
+    $stmt->bind_param("ss", $userId, $raterId);
     $stmt->execute();
 
     $result = $stmt->get_result();

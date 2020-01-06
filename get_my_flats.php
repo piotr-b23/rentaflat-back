@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if ($auth === 1) {
 
         $stmt = $conn->prepare("SELECT * FROM flat WHERE userId = ? AND status = ? ORDER BY date DESC");
-        $stmt->bind_param("is", $userId, $status);
+        $stmt->bind_param("ss", $userId, $status);
         $stmt->execute();
 
         $result = $stmt->get_result();

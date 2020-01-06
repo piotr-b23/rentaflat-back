@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             array_push($response['flat'], array(
-                'id' => $row['id'],
+                'id' => $row['flatId'],
                 'userid' => $row['userId'],
                 'description' => $row['description'],
                 'price' => $row['price'],

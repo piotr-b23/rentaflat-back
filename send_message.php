@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("INSERT INTO message(senderId, recipientId, title, text,date) VALUES(?,?,?,?,?)");
-    $stmt->bind_param("iisss", $senderId, $recipientId, $title, $text, $date);
+    $stmt->bind_param("sssss", $senderId, $recipientId, $title, $text, $date);
 
     $auth = authorization($senderId, $token);
 

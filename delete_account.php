@@ -16,13 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($auth === 1) {
 
         $stmt = $conn->prepare("SELECT password FROM user WHERE username = ? AND id = ?");
-        $stmt->bind_param("si", $username, $userId);
+        $stmt->bind_param("ss", $username, $userId);
         $stmt->execute();
 
         $result = $stmt->get_result();
 
         $stmtDeleteUser = $conn->prepare("UPDATE user SET username= ?, password= ?, email= ?,phone= ?,status= ?, authToken = ? WHERE username = ? AND id = ?");
-        $stmtDeleteUser->bind_param("sssisssi", $null, $null, $null, $null, $status, $null, $username, $userId);
+        $stmtDeleteUser->bind_param("sssissss", $null, $null, $null, $null, $status, $null, $username, $userId);
 
         if (mysqli_num_rows($result) === 1) {
 

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $auth = authorization($raterId, $token);
     if ($auth === 1) {
         $stmt = $conn->prepare("SELECT * FROM rate WHERE raterId = ? ORDER BY date DESC");
-        $stmt->bind_param("i", $raterId);
+        $stmt->bind_param("s", $raterId);
         $stmt->execute();
 
         $result = $stmt->get_result();

@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("INSERT INTO rate(userId,raterId, contactRate, descriptionRate, comment, date) VALUES(?,?,?,?,?,?)");
-    $stmt->bind_param("iiddss", $userId, $raterId, $contactRate, $descriptionRate, $comment, $date);
+    $stmt->bind_param("ssddss", $userId, $raterId, $contactRate, $descriptionRate, $comment, $date);
 
     $auth = authorization($raterId, $token);
 

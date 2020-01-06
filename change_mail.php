@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'conn.php';
 
     $stmtUpdateMail = $conn->prepare("UPDATE user SET email=? WHERE id=?");
-    $stmtUpdateMail->bind_param("si", $email, $userId);
+    $stmtUpdateMail->bind_param("ss", $email, $userId);
 
     $auth = authorization($userId, $token);
 

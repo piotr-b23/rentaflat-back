@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once 'conn.php';
 
     $stmt = $conn->prepare("UPDATE user SET phone=? WHERE id=? ");
-    $stmt->bind_param("si", $phone, $userId);
+    $stmt->bind_param("ss", $phone, $userId);
 
     $auth = authorization($userId, $token);
 

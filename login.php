@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $token = bin2hex(openssl_random_pseudo_bytes(64));
             $stmtToken = $conn->prepare("UPDATE user SET authToken=? WHERE id=?");
-            $stmtToken->bind_param("si", $token, $row['id']);
+            $stmtToken->bind_param("ss", $token, $row['id']);
             $stmtToken->execute();
 
             $index['name'] = $row['name'];

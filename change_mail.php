@@ -17,8 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($auth === 1) {
 
-        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
             $stmtExistingMail = $conn->prepare("SELECT id FROM user WHERE email = ?");
             $stmtExistingMail->bind_param("s", $email);
             $stmtExistingMail->execute();
@@ -60,11 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo json_encode($response);
                 mysqli_close($conn);
             }
-        } else {
-            $result['success'] = "0";
-            echo json_encode($result);
-            mysqli_close($conn);
-        }
     } else {
         $result['success'] = "0";
         echo json_encode($result);

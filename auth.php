@@ -5,7 +5,7 @@ function authorization($userId, $token)
 
     require 'conn.php';
 
-    $stmt = $conn->prepare("SELECT * FROM user WHERE id = ? AND authToken = ?");
+    $stmt = $conn->prepare("SELECT id FROM user WHERE id = ? AND authToken = ?");
     $stmt->bind_param("ss", $userId, $token);
     $stmt->execute();
 

@@ -15,7 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $street = $_POST['street'];
     $students = $_POST['students'];
     $photo = $_POST['photo'];
-    $date = $_POST['date'];
+
+    date_default_timezone_set('Poland');
+    $date = date('Y-m-d H:i:s');
 
     $status = "active";
 

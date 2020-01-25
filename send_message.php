@@ -8,7 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $recipientId = $_POST['recipientId'];
     $title = $_POST['title'];
     $text = $_POST['text'];
-    $date = $_POST['date'];
+
+    date_default_timezone_set('Poland');
+    $date = date('Y-m-d H:i:s');
 
 
     require_once 'conn.php';

@@ -9,7 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contactRate = $_POST['contactRate'];
     $descriptionRate = $_POST['descriptionRate'];
     $comment = $_POST['comment'];
-    $date = $_POST['date'];
+
+    date_default_timezone_set('Poland');
+    $date = date('Y-m-d');
 
     require_once 'conn.php';
 

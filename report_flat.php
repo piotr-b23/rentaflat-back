@@ -7,7 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $flatId = $_POST['flatId'];
     $reportingUserId = $_POST['reportUserId'];
     $comment = $_POST['comment'];
-    $date = $_POST['date'];
+
+    date_default_timezone_set('Poland');
+    $date = date('Y-m-d H:i:s');
 
     require_once 'conn.php';
 

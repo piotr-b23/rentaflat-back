@@ -16,8 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($auth === 1) {
 
-        if (preg_match('/^[0-9]{9}$/', $phone)) {
-
             if ($stmt->execute()) {
                 $result['success'] = "1";
                 echo json_encode($result);
@@ -27,11 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 echo json_encode($result);
                 mysqli_close($conn);
             }
-        } else {
-            $result['success'] = "0";
-            echo json_encode($result);
-            mysqli_close($conn);
-        }
     } else {
         $result['success'] = "0";
         echo json_encode($result);
